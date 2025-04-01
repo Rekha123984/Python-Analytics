@@ -59,20 +59,42 @@ Different methods were used to generate charts based on the dataset structure:
     plt.show()
     ```
 - **Using `with open` for File Handling:**
-  - When working with JSON or text-based datasets, data was loaded using `with open()`.
+  - When working with JSON or csv, data was loaded using `with open()`.
   - Example:
     ```python
-    import json
-    import matplotlib.pyplot as plt
-    
-    with open("data.json") as file:
-        data = json.load(file)
-    
-    categories = [item['Category'] for item in data]
-    values = [item['Value'] for item in data]
-    
-    plt.bar(categories, values)
+    import pandas as pd
+    import csv
+    from collections import defaultdict
+
+    Education_sum=defaultdict(int)
+    Education_count=defaultdict(int)
+
+    with open("HR-Employee-Attrition.csv","r") as csvfile:
+      plot=csv.reader(csvfile,delimiter=",")
+
+      next(plot)
+
+      for rows in plot:
+        EducationField=(rows[7])
+        Education=int(rows[6])
+        Education_sum[EducationField]+=Education
+        Education_count[EducationField]+=1
+
+    # Calculate the average education level per field
+    Average_Education= {field: Education_sum[field] / Education_count[field] for field in Education_sum}
+
+    x=list(Average_Education.keys())
+    y=list(Average_Education.values())
+
+    plt.figure(figsize=(10,6))
+    plt.plot(x,y,color="blue",marker="o",label="HR-Employee-Attrition")
+    plt.xlabel("EducationField")
+    plt.ylabel("Education_count")
+    plt.title("HR-Employee-Attrition")
+    plt.xticks(rotation=45)
+    plt.grid(True)
     plt.show()
+
     ```
 - **Seaborn for Advanced Visualization:**
   - Heatmaps, scatter plots, and density plots were created using Seaborn.
