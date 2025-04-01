@@ -53,9 +53,22 @@ Different methods were used to generate charts based on the dataset structure:
     ```python
     import pandas as pd
     import matplotlib.pyplot as plt
-    
-    df = pd.read_csv("data.csv")
-    df.plot(kind='bar', x='Category', y='Value')
+
+    # Load the CSV file
+    df = pd.read_csv("California Wildfire Damage.csv")
+
+    # Group data by Cause and sum Injuries
+    injuries_by_cause = df.groupby("Cause")["Injuries"].sum()
+
+    # Create a pie chart
+    plt.figure(figsize=(8, 8))
+    plt.pie(injuries_by_cause, labels=injuries_by_cause.index, autopct="%1.1f%%", startangle=140,
+        colors=['lightcoral', 'gold', 'lightskyblue', 'lightgreen'], wedgeprops={'edgecolor': 'black'})
+
+    plt.title("Wildfire Injuries by Cause")
+    plt.xlabel("Cause")
+    plt.ylabel("Injuries")
+    plt.legend()
     plt.show()
     ```
 - **Using `with open` for File Handling:**
